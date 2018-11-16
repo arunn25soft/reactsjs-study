@@ -1,0 +1,16 @@
+.form-background{
+    /* padding: 30px; */
+    background-color: #f3f3f3;
+    /* background-color: #152935; */
+    /* width: 80%;
+    margin: 0 auto;
+    padding: 10px; */
+}
+.form-input{
+    margin-bottom: 20px;
+}
+.button-container{
+    /* text-align: right; */
+    float: right;
+    margin-top:20px;
+}
