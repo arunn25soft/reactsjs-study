@@ -4,22 +4,21 @@ import './App.css';
 import  Header  from './components/header';
 import  InputText  from './components/inputText';
 import  SubmitButton  from './components/button';
-
+import { Button } from "carbon-components-react";
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  
-  handleSubmit(event) {
-    event.preventDefault();
-    const data = new FormData(event.target);
-    console.log("submited data is "+data);
-    // fetch('/api/form-submit-url', {
-    //   method: 'POST',
-    //   body: data,
-    // });
+
+  handleSubmit(e) {
+    alert('The value is: ' + this.input.value);
+    e.preventDefault();
   }
+  clickme(){
+    alert("you clicked me");
+  }
+
   render() {
     return (
       // <form className="form-background">
@@ -40,7 +39,7 @@ class App extends Component {
       //     </div>
       // </form>
 
-  <form  className="padding-layout">
+  <form  onSubmit={this.handleSubmit} className="padding-layout">
   <Header header_title="Dashboard"/>
   <section className="bx--col-xs-12 about-app">React with IBM Carbon UI</section>
 	{/* <section className="bx--col-xs-12 about-subtitle">Your Information</section> */}
@@ -56,11 +55,13 @@ class App extends Component {
             <InputText label_text="Phone" placeholder_text="Please enter phone"/>
 					</div>
           <div className="bx--col-md-4 bx--col-xs-12 label-div">
-            <SubmitButton button_name="Submit" button_type="primary"/>
+            <Button button_name="Submit" button_type="primary" onClick={this.clickme}>submit</Button>
           </div>
 				{/* </div> */}
       {/* </div> */}
   </form>
+
+
     );
   }
 }
