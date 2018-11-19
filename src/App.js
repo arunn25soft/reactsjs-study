@@ -3,6 +3,7 @@ import './App.css';
 import  Header  from './components/header';
 import  InputText  from './components/inputText';
 import { Button } from "carbon-components-react";
+import axios from "axios";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -12,10 +13,25 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleSubmit(event) {
-      alert('A name was submitted: ' + this.state.name);
-      alert('An email was submitted: ' + this.state.email);
-      alert('A phone was submitted: ' + this.state.phone);
+     // alert('A name was submitted: ' + this.state.name);
+     // alert('An email was submitted: ' + this.state.email);
+     // alert('A phone was submitted: ' + this.state.phone);
       event.preventDefault();
+      this.submitToServer();
+      
+  }
+  submitToServer(){
+    const data = {
+      name: this.state.name,
+      email: this.state.email,
+      phone: this.state.phone
+    }
+    axios.post('http://qf.local',{data}).then((res)=>{
+      alert(res.data.resp)
+    }).catch((error)=>{
+      alert(error)
+      console.log(error)
+    });
   }
   onChangeName = (val) => {
     this.setState({
