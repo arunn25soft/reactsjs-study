@@ -55,10 +55,10 @@ class App extends Component {
             {/* <input type="text" onChange={this.updateInputValue.bind(this)}/> */}
           </div>
           <div className="bx--col-md-4 bx--col-xs-12 label-div">
-            <InputText onUpdate={this.onUpdate} label_text="Email Id" placeholder_text="Please enter email id"/>
+            <InputText onUpdate={this.onUpdate}  placeholder="Please enter email id"/>
 					</div>
           <div className="bx--col-md-4 bx--col-xs-12 label-div">
-            <InputText label_text="Phone" placeholder_text="Please enter phone"/>
+            <InputText  placeholder="Please enter phone"/>
 					</div>
           <div className="bx--col-md-4 bx--col-xs-12 label-div">
             <Button type="submit" button_name="Submit" button_type="primary" onClick={this.clickme}>submit</Button>

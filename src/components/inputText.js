@@ -20,7 +20,7 @@ update = (e) => {
     <TextInput
         className="bx--text-input"
         id="test2"
-        //labelText= {props.label_text}
+        labelText= ""
         type=""
        // placeholder= {props.placeholder_text}
         hideLabel={false}
