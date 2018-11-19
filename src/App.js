@@ -51,14 +51,14 @@ class App extends Component {
   <Header header_title="Dashboard"/>
   <section className="bx--col-xs-12 about-app">React with IBM Carbon UI</section>
 					<div className="bx--col-md-4 bx--col-xs-12 label-div">
-            <TextInput  id="test2" className="bx--text-input" type="text" value={this.state.value} labelText="First Name" onChange={this.updateInputValue.bind(this)} placeholder="Please enter first name"/> 
+            <TextInput  id="test2" className="bx--text-input" type="text" value={this.state.value} labelText="First Name" onChange={this.updateInputValue.bind(this)} placeholder="Please enter first name"/>  
             {/* <input type="text" onChange={this.updateInputValue.bind(this)}/> */}
           </div>
           <div className="bx--col-md-4 bx--col-xs-12 label-div">
-            <InputText onUpdate={this.onUpdate}  placeholder="Please enter email id"/>
+            <InputText onUpdate={this.onUpdate} input_id="test2" input_type="text" error_text="A valid value is required" label_text="Email id" placeholder_text="Please enter email id"/>
 					</div>
           <div className="bx--col-md-4 bx--col-xs-12 label-div">
-            <InputText  placeholder="Please enter phone"/>
+            <InputText input_id="test2" label_text="Phone number" placeholder="Please enter phone"/>
 					</div>
           <div className="bx--col-md-4 bx--col-xs-12 label-div">
             <Button type="submit" button_name="Submit" button_type="primary" onClick={this.clickme}>submit</Button>

@@ -1,3 +1,24 @@
+// import React from 'react';
+// import { TextInput } from "carbon-components-react";
+
+// const InputText = (props) => (
+//     <TextInput
+//         className="bx--text-input"
+//         id="test2"
+//         labelText= {props.label_text}
+//         type=""
+//         placeholder= {props.placeholder_text}
+//         hideLabel={false}
+//         invalidText="A valid value is required"
+//         name={props.label_text}
+//         // helperText="Optional helper text."
+//     />
+//   )
+
+//   export default InputText;
+
+
+
 import React from 'react';
 import { TextInput } from "carbon-components-react";
 class InputText extends React.Component {
@@ -18,14 +39,14 @@ update = (e) => {
  //InputText = (props) => (
      
     <TextInput
-        className="bx--text-input"
-        id="test2"
-        labelText= ""
-        type=""
-       // placeholder= {props.placeholder_text}
+        className={this.props.class}
+        id={this.props.input_id}
+        labelText= {this.props.label_text}
+        type={this.props.input_type}
+        placeholder= {this.props.placeholder_text}
         hideLabel={false}
-        invalidText="A valid value is required"
-        //name={props.label_text}
+        invalidText= {this.props.error_text}
+        name={this.props.label_text}
         onChange={this.update}
         // helperText="Optional helper text."
     />
