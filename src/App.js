@@ -9,8 +9,8 @@ import {
   StructuredListHead,
   StructuredListBody,
   StructuredListRow,
-  StructuredListInput,
   StructuredListCell,
+  ToastNotification
 } from "carbon-components-react";
 class App extends Component {
   constructor(props) {
@@ -18,6 +18,9 @@ class App extends Component {
     this.state = {name: ''};
     this.state = {email: ''};
     this.state = {phone: ''};
+    this.state = {mode: ''};
+    this.state = {visibility: 'false'}
+    this.state = {userDetails: []}
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleSubmit(event) {
@@ -26,7 +29,42 @@ class App extends Component {
      // alert('A phone was submitted: ' + this.state.phone);
       event.preventDefault();
       this.submitToServer();
+      //const  userDetails = '"first_name":"manu","email":"manu@gmail.com","phone":"98956741"';
+      //this.setState({ userDetails })
       
+      
+  }
+  // componentDidMount() {
+  //   var th = this;
+  //   this.serverRequest = axios.get(this.props.source)
+  //   .then(function(event) { 
+  //       th.setState({
+  //           data: event.data
+  //       });
+  //   })
+  //  }
+  getDataFromServer(){ 
+    axios.get('http://qf.local/list.php')
+      .then((json)=>{
+        const userDetails = json.data.resp;
+        this.setState({ userDetails })
+      }, (reason) => {
+      });
+  }
+  componentDidMount(){
+    axios.get('http://qf.local/list.php')
+      .then((json)=>{ 
+       if(json.data !== null){
+          const userDetails =  json.data.resp;
+          console.log("Server response "+userDetails.length);
+          if(userDetails.length > 0){
+            this.setState({ visibility: 'true'})
+             this.setState({ userDetails })
+           }else{
+             this.setState({ visibility: 'false'})
+           }
+        }
+      });
   }
   submitToServer(){
     const data = {
@@ -35,11 +73,26 @@ class App extends Component {
       phone: this.state.phone
     }
     axios.post('http://qf.local',{data}).then((res)=>{
-      alert(res.data.resp)
+      console.log(res.data.resp)
+      this.setState({
+        mode: 'insert-success'
+      })
+      this.setState({ 
+        visibility: 'true'
+      })
+      var that = this;
+      that.getDataFromServer();
+      setTimeout(function(){
+        that.setState({
+          mode: ''
+        })
+        
+      },800);
     }).catch((error)=>{
       alert(error)
       console.log(error)
     });
+    
   }
   onChangeName = (val) => {
     this.setState({
@@ -76,11 +129,25 @@ class App extends Component {
             <div className="bx--col-md-6 bx--col-xs-12 label-div">
               <Button type="submit" button_name="Submit" button_type="primary" onClick={this.clickme}>submit</Button>
             </div>
+            <section className="bx--col-xs-12 notification-holder">
+            {this.state.mode === 'insert-success' && (
+              <ToastNotification
+                kind="success"
+                title="Success"
+                subtitle=""
+                iconDescription="describes the close button"
+                //onCloseButtonClick=''
+                caption="Data inserted"
+                style={{minWidth: '30rem',marginBottom: '.5rem'}}
+              /> 
+              )}
+            </section>
     </div>
+    
     <div className="bx--col-xs-12 bx--col-md-6">
             <div className="bx--col-md-6 bx--col-xs-12 label-div">
-              {/* <InputText onUpdate={this.onChangeName} input_id="test2" helper_text="Name as on passport" input_type="text" error_text="A valid value is required" label_text="First name" placeholder_text="Please enter name"/> */}
               <StructuredListWrapper>
+              {this.state.visibility === 'true' && (
                     <StructuredListHead>
                       <StructuredListRow head>
                         <StructuredListCell head>
@@ -97,36 +164,25 @@ class App extends Component {
                         </StructuredListCell>
                       </StructuredListRow>
                     </StructuredListHead>
-
+              )}
                   <StructuredListBody>
-                    <StructuredListRow>
+                  {/* {this.state.people.map((person, index) => ( */}
+                    {this.state.userDetails.map((user,index) =>(
+                    <StructuredListRow key={index}>
                       <StructuredListCell noWrap>
-                          1
+                      {index+1}
                       </StructuredListCell>
                       <StructuredListCell>
-                          Arun
+                      {user.first_name}
                       </StructuredListCell>
                       <StructuredListCell>
-                          arunwrc@gmail.com
+                      {user.email}
                       </StructuredListCell>
                       <StructuredListCell>
-                          9633532262
+                        {user.phone}
                       </StructuredListCell>
                     </StructuredListRow>
-                    <StructuredListRow>
-                      <StructuredListCell noWrap>
-                          2
-                      </StructuredListCell>
-                      <StructuredListCell>
-                          Sujeesh
-                      </StructuredListCell>
-                      <StructuredListCell>
-                          sujeesh@gmail.com
-                      </StructuredListCell>
-                      <StructuredListCell>
-                          9995499541
-                      </StructuredListCell>
-                    </StructuredListRow>
+                    ))}
                   </StructuredListBody>
               </StructuredListWrapper>
            

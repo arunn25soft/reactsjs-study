@@ -7,10 +7,7 @@ const Header = (props) => (
          {props.header_title}
       </span>
       <span>
-        <a href="" className="title-text-padding bx--global-header__title--logo bx--cloud-header-brand" >
-          <h4 className="bx--cloud-header-brand__text">
-          </h4>
-        </a>
+        
       </span>
     </div>
   </header>
