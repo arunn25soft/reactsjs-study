@@ -136,16 +136,16 @@ class App extends Component {
                       <Button type="submit" button_name="Submit" button_type="primary" onClick={this.clickme}>submit</Button>
                     </div>
                     <section className="bx--col-xs-12 notification-holder">
-                    {this.state.mode === 'insert-success' && (
-                      <ToastNotification
-                        kind="success"
-                        title="Success"
-                        subtitle=""
-                        iconDescription="describes the close button"
-                        //onCloseButtonClick=''
-                        caption="Data inserted"
-                        style={{minWidth: '30rem',marginBottom: '.5rem'}}
-                      /> 
+                      {this.state.mode === 'insert-success' && (
+                        <ToastNotification
+                          kind="success"
+                          title="Success"
+                          subtitle=""
+                          iconDescription="describes the close button"
+                          //onCloseButtonClick=''
+                          caption="Data inserted"
+                          style={{minWidth: '30rem',marginBottom: '.5rem'}}
+                        /> 
                       )}
                     </section>
             </div>
