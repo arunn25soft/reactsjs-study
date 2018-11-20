@@ -10,7 +10,8 @@ import {
   StructuredListBody,
   StructuredListRow,
   StructuredListCell,
-  ToastNotification
+  ToastNotification,
+  Loading
 } from "carbon-components-react";
 class App extends Component {
   constructor(props) {
@@ -19,8 +20,10 @@ class App extends Component {
     this.state = {email: ''};
     this.state = {phone: ''};
     this.state = {mode: ''};
-    this.state = {visibility: 'false'}
-    this.state = {userDetails: []}
+    this.state = {visibility: 'false'};
+    this.state = {preloading: true};
+    this.state = {userDetails: []};
+    
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleSubmit(event) {
@@ -52,11 +55,12 @@ class App extends Component {
       });
   }
   componentDidMount(){
+    this.setState({ preloading: false})
     axios.get('http://qf.local/list.php')
       .then((json)=>{ 
        if(json.data !== null){
           const userDetails =  json.data.resp;
-          console.log("Server response "+userDetails.length);
+          //console.log("Server response "+userDetails.length);
           if(userDetails.length > 0){
             this.setState({ visibility: 'true'})
              this.setState({ userDetails })
@@ -67,6 +71,7 @@ class App extends Component {
       });
   }
   submitToServer(){
+    this.setState({ preloading: true})
     const data = {
       name: this.state.name,
       email: this.state.email,
@@ -86,7 +91,7 @@ class App extends Component {
         that.setState({
           mode: ''
         })
-        
+        that.setState({ preloading: false})  
       },800);
     }).catch((error)=>{
       alert(error)
@@ -113,84 +118,82 @@ class App extends Component {
   render() {
     return (
     <form  onSubmit={this.handleSubmit} className="padding-layout">
-    <Header header_title="Dashboard"/>
-    <section className="bx--col-xs-12 about-app">React with IBM Carbon UI</section>
-    <div className="bx--row">
-    <div className="bx--col-xs-12 bx--col-md-6">
-            <div className="bx--col-md-6 bx--col-xs-12 label-div">
-              <InputText onUpdate={this.onChangeName} input_id="test2" helper_text="Name as on passport" input_type="text" error_text="A valid value is required" label_text="First name" placeholder_text="Please enter name"/>
+        <Loading active={this.state.preloading} withOverlay={true} className="preloader-class" />
+        <Header header_title="Dashboard"/>
+        <section className="bx--col-xs-12 about-app">React with IBM Carbon UI</section>
+        <div className="bx--row">
+            <div className="bx--col-xs-12 bx--col-md-6">
+                    <div className="bx--col-md-6 bx--col-xs-12 label-div">
+                      <InputText onUpdate={this.onChangeName} input_id="test2" helper_text="Name as on passport" input_type="text" error_text="A valid value is required" label_text="First name" placeholder_text="Please enter name"/>
+                    </div>
+                    <div className="bx--col-md-6 bx--col-xs-12 label-div">
+                      <InputText onUpdate={this.onChangeEmail} input_id="test2" helper_text="Official email id" input_type="text" error_text="A valid value is required" label_text="Email id" placeholder_text="Please enter email id"/>
+                    </div>
+                    <div className="bx--col-md-6 bx--col-xs-12 label-div">
+                      <InputText onUpdate={this.onChangePhone} input_id="test3" helper_text="Official Phone" input_type="text" error_text="A valid value is required" label_text="Phone number" placeholder_text="Please enter phone"/>
+                    </div>
+                    <div className="bx--col-md-6 bx--col-xs-12 label-div">
+                      <Button type="submit" button_name="Submit" button_type="primary" onClick={this.clickme}>submit</Button>
+                    </div>
+                    <section className="bx--col-xs-12 notification-holder">
+                    {this.state.mode === 'insert-success' && (
+                      <ToastNotification
+                        kind="success"
+                        title="Success"
+                        subtitle=""
+                        iconDescription="describes the close button"
+                        //onCloseButtonClick=''
+                        caption="Data inserted"
+                        style={{minWidth: '30rem',marginBottom: '.5rem'}}
+                      /> 
+                      )}
+                    </section>
             </div>
-            <div className="bx--col-md-6 bx--col-xs-12 label-div">
-              <InputText onUpdate={this.onChangeEmail} input_id="test2" helper_text="Official email id" input_type="text" error_text="A valid value is required" label_text="Email id" placeholder_text="Please enter email id"/>
+        
+            <div className="bx--col-xs-12 bx--col-md-6">
+                  <div className="bx--col-md-6 bx--col-xs-12 label-div">
+                    <StructuredListWrapper>
+                        {this.state.visibility === 'true' && (
+                          <StructuredListHead>
+                            <StructuredListRow head>
+                              <StructuredListCell head>
+                                  #
+                              </StructuredListCell>
+                              <StructuredListCell head>
+                                  Name
+                              </StructuredListCell>
+                              <StructuredListCell head>
+                                  Email
+                              </StructuredListCell>
+                              <StructuredListCell head>
+                                  Phone
+                              </StructuredListCell>
+                            </StructuredListRow>
+                          </StructuredListHead>
+                        )}                  
+                        <StructuredListBody>
+                        {/* {this.state.people.map((person, index) => ( */}
+                          {this.state.userDetails.map((user,index) =>(
+                          <StructuredListRow key={index}>
+                            <StructuredListCell noWrap>
+                            {index+1}
+                            </StructuredListCell>
+                            <StructuredListCell>
+                            {user.first_name}
+                            </StructuredListCell>
+                            <StructuredListCell>
+                            {user.email}
+                            </StructuredListCell>
+                            <StructuredListCell>
+                              {user.phone}
+                            </StructuredListCell>
+                          </StructuredListRow>
+                          ))}
+                        </StructuredListBody>
+                    </StructuredListWrapper>
+                  </div>
             </div>
-            <div className="bx--col-md-6 bx--col-xs-12 label-div">
-              <InputText onUpdate={this.onChangePhone} input_id="test3" helper_text="Official Phone" input_type="text" error_text="A valid value is required" label_text="Phone number" placeholder_text="Please enter phone"/>
-            </div>
-            <div className="bx--col-md-6 bx--col-xs-12 label-div">
-              <Button type="submit" button_name="Submit" button_type="primary" onClick={this.clickme}>submit</Button>
-            </div>
-            <section className="bx--col-xs-12 notification-holder">
-            {this.state.mode === 'insert-success' && (
-              <ToastNotification
-                kind="success"
-                title="Success"
-                subtitle=""
-                iconDescription="describes the close button"
-                //onCloseButtonClick=''
-                caption="Data inserted"
-                style={{minWidth: '30rem',marginBottom: '.5rem'}}
-              /> 
-              )}
-            </section>
-    </div>
-    
-    <div className="bx--col-xs-12 bx--col-md-6">
-            <div className="bx--col-md-6 bx--col-xs-12 label-div">
-              <StructuredListWrapper>
-              {this.state.visibility === 'true' && (
-                    <StructuredListHead>
-                      <StructuredListRow head>
-                        <StructuredListCell head>
-                            #
-                        </StructuredListCell>
-                        <StructuredListCell head>
-                            Name
-                        </StructuredListCell>
-                        <StructuredListCell head>
-                            Email
-                        </StructuredListCell>
-                        <StructuredListCell head>
-                            Phone
-                        </StructuredListCell>
-                      </StructuredListRow>
-                    </StructuredListHead>
-              )}
-                  <StructuredListBody>
-                  {/* {this.state.people.map((person, index) => ( */}
-                    {this.state.userDetails.map((user,index) =>(
-                    <StructuredListRow key={index}>
-                      <StructuredListCell noWrap>
-                      {index+1}
-                      </StructuredListCell>
-                      <StructuredListCell>
-                      {user.first_name}
-                      </StructuredListCell>
-                      <StructuredListCell>
-                      {user.email}
-                      </StructuredListCell>
-                      <StructuredListCell>
-                        {user.phone}
-                      </StructuredListCell>
-                    </StructuredListRow>
-                    ))}
-                  </StructuredListBody>
-              </StructuredListWrapper>
-           
-
-             
-            </div>
-    </div>
-    </div>
+        </div>
     </form>
     );
   }
