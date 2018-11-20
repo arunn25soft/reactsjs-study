@@ -4,6 +4,7 @@ import  Header  from './components/header';
 import  InputText  from './components/inputText';
 import { Button } from "carbon-components-react";
 import axios from "axios";
+import PopupModal from "./components/popupmodal";
 import {
   StructuredListWrapper,
   StructuredListHead,
@@ -11,8 +12,10 @@ import {
   StructuredListRow,
   StructuredListCell,
   ToastNotification,
-  Loading
+  Loading,
 } from "carbon-components-react";
+import { Icon } from 'carbon-components-react'
+import { iconDelete } from 'carbon-icons'
 class App extends Component {
   constructor(props) {
     super(props);
@@ -22,9 +25,11 @@ class App extends Component {
     this.state = {mode: ''};
     this.state = {visibility: 'false'};
     this.state = {preloading: true};
+    this.state = {deletePrompt: 'true'};
     this.state = {userDetails: []};
     
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.clickme = this.clickme.bind(this);
   }
   handleSubmit(event) {
      // alert('A name was submitted: ' + this.state.name);
@@ -69,6 +74,13 @@ class App extends Component {
            }
         }
       });
+  }
+  clickme(e){
+    e.stopPropagation();
+    //alert("hello");
+    this.setState({ 
+      deletePrompt: "true"
+    });
   }
   submitToServer(){
     this.setState({ preloading: true})
@@ -133,7 +145,7 @@ class App extends Component {
                       <InputText onUpdate={this.onChangePhone} input_id="test3" helper_text="Official Phone" input_type="text" error_text="A valid value is required" label_text="Phone number" placeholder_text="Please enter phone"/>
                     </div>
                     <div className="bx--col-md-6 bx--col-xs-12 label-div">
-                      <Button type="submit" button_name="Submit" button_type="primary" onClick={this.clickme}>submit</Button>
+                      <Button type="submit" button_name="Submit" button_type="primary">submit</Button>
                     </div>
                     <section className="bx--col-xs-12 notification-holder">
                       {this.state.mode === 'insert-success' && (
@@ -168,6 +180,9 @@ class App extends Component {
                               <StructuredListCell head>
                                   Phone
                               </StructuredListCell>
+                              <StructuredListCell head>
+                                  Action
+                              </StructuredListCell>
                             </StructuredListRow>
                           </StructuredListHead>
                         )}                  
@@ -186,6 +201,17 @@ class App extends Component {
                             </StructuredListCell>
                             <StructuredListCell>
                               {user.phone}
+                            </StructuredListCell>
+                            <StructuredListCell>
+                            <Icon
+                              icon={iconDelete}
+                              fill="red"
+                              description="Delete"
+                              onClick={this.clickme}
+                            />
+                            {this.state.deletePrompt === 'true' && (
+                              <PopupModal />
+                            )}
                             </StructuredListCell>
                           </StructuredListRow>
                           ))}
