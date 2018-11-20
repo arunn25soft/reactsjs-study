@@ -29,3 +29,11 @@
     font-size: 20px;
     font-weight: 500;
 }
+.bx--structured-list-row {
+    border-bottom: 1px solid #dfe3e6;
+    display: table-row;
+    transition: .25s cubic-bezier(.5,0,.1,1);
+}
+/* body{
+    background-color: #fff;
+} */
